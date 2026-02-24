@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
-import "./globals.css";
+import "@/app/(Global)/globals.css";
 
 // Components
 import Footer from "@/components/Footer/Footer";

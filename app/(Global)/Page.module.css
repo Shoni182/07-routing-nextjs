@@ -30,9 +30,3 @@
 .button:hover {
   background-color: #0b5ed7;
 }
-
-.loading {
-  padding: 20px;
-
-  text-align: center;
-}

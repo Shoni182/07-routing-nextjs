@@ -9,7 +9,7 @@ import {
 
 //: Component
 
-import NoteListPage from "@/app/notes/Notes.client";
+import NoteListPage from "@/app/notes/filter/[...slug]/Notes.client";
 import { fetchNotes } from "@/lib/api";
 
 // : Server prefetch

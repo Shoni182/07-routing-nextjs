@@ -6,7 +6,7 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 // import { toast, Toaster } from "react-hot-toast";
-import css from "@/app/notes/Notes.module.css";
+import css from "./Notes.module.css";
 
 //: Components
 import Modal from "@/components/Modal/Modal";

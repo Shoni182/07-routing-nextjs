@@ -4,6 +4,7 @@ import axios from "axios";
 // interface
 import { type Note } from "../types/note";
 import { type NewNote } from "../types/note";
+import { NoteTag } from "../types/note";
 
 export interface FetchNotesResponse {
   notes: Note[];
@@ -13,6 +14,15 @@ export interface FetchNotesResponse {
 // Key
 const myKey = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
 axios.defaults.baseURL = "https://notehub-public.goit.study/api";
+
+export const getCategories = async () => {
+  const res = await axios<Note[]>(`/tag`, {
+    headers: {
+      Authorization: `Bearer ${myKey}`,
+    },
+  });
+  return res.data;
+};
 
 export const fetchNotes = async ({
   page,

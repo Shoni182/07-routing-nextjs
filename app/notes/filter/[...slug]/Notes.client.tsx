@@ -21,8 +21,6 @@ import NoteList from "@/components/NoteList/NoteList";
 interface InitialValuesProps {
   initialValues: {
     page: number;
-    perPage: number;
-    searchInput: string;
     currentTag?: string;
   };
 }
@@ -30,9 +28,10 @@ interface InitialValuesProps {
 //:  Fn
 const NoteListPage = ({ initialValues }: InitialValuesProps) => {
   //: Initial Values
-  const { page, perPage, searchInput, currentTag } = initialValues;
+  const { page, currentTag } = initialValues;
 
   //: Pages
+  // const perPage = 12;
   const [currentPage, setCurrentPage] = useState(page);
 
   //: Modal
@@ -41,7 +40,7 @@ const NoteListPage = ({ initialValues }: InitialValuesProps) => {
   const closeModal = () => setIsModalOpen(false);
 
   //: Search and Debounce
-  const [searchText, setSearchText] = useState(searchInput);
+  const [searchText, setSearchText] = useState("");
   const debaucedSetSearchText = useDebouncedCallback(setSearchText, 300);
 
   const handleSearch = (value: string) => {
@@ -51,12 +50,11 @@ const NoteListPage = ({ initialValues }: InitialValuesProps) => {
 
   //: Use Query
   const { data, isSuccess } = useQuery({
-    queryKey: ["notes", currentPage, perPage, searchText, currentTag],
+    queryKey: ["notes", currentPage, searchText, currentTag],
     queryFn: () =>
       fetchNotes({
         page: currentPage,
-        perPage: perPage,
-        searchInput: searchText,
+        searchText: searchText,
         currentTag: currentTag,
       }),
     placeholderData: keepPreviousData,

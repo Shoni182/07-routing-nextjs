@@ -10,8 +10,7 @@ type Props = {
 
 type NoteParams = {
   page: number;
-  perPage: number;
-  searchInput: string;
+  searchText: string;
   currentTag?: string;
 };
 
@@ -37,15 +36,14 @@ const NotesPage = async ({ params }: Props) => {
 
   const queryParams: NoteParams = {
     page: 1,
-    perPage: 12,
-    searchInput: "",
+    searchText: "",
     currentTag: currentTag,
   };
 
   await queryClient.prefetchQuery({
     // На серверній частині ключі записуються обєктами задля вдомності,
     // так як вони повинні співпадати з Кількістю ключів в клієнському компоненті
-    queryKey: ["notes", params],
+    queryKey: ["notes", currentTag],
     queryFn: () => fetchNotes(queryParams),
   });
 

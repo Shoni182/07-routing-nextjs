@@ -1,5 +1,20 @@
+// app/notes/filter/[...slug]/page.tsx
+import NoteListPage from "./Notes.client";
+
 //?   SSR server side rendering - default mode
 //
+
+type Props = {
+  params: Promise<{ slug: string[] }>;
+};
+
+type NoteParams = {
+  page: number;
+  perPage: number;
+  searchInput: string;
+  currentTag?: string;
+};
+
 //: Libraries
 import {
   QueryClient,
@@ -9,26 +24,35 @@ import {
 
 //: Component
 
-import NoteListPage from "@/app/notes/filter/[...slug]/Notes.client";
 import { fetchNotes } from "@/lib/api";
+// import { NoteTag } from "@/types/note";
 
 // : Server prefetch
-const NotesPage = async () => {
+const NotesPage = async ({ params }: Props) => {
   const queryClient = new QueryClient();
 
-  const params = { page: 1, perPage: 12, searchInput: "" };
+  //- Запамятати
+  const { slug } = await params;
+  const currentTag = slug[0] === "all" ? undefined : slug[0];
+
+  const queryParams: NoteParams = {
+    page: 1,
+    perPage: 12,
+    searchInput: "",
+    currentTag: currentTag,
+  };
 
   await queryClient.prefetchQuery({
     // На серверній частині ключі записуються обєктами задля вдомності,
     // так як вони повинні співпадати з Кількістю ключів в клієнському компоненті
     queryKey: ["notes", params],
-    queryFn: () => fetchNotes(params),
+    queryFn: () => fetchNotes(queryParams),
   });
 
   // : Return and dehydratation
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <NoteListPage initialValues={params} />
+      <NoteListPage initialValues={queryParams} />
     </HydrationBoundary>
   );
 };

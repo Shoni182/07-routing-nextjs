@@ -1,3 +1,4 @@
+// app/notes/filter/[...slug]/Notes.client.tsx
 //?  USE CLIETN derective for - CSR Client side rendering
 //
 "use client";
@@ -14,18 +15,24 @@ import Pagination from "@/components/Pagination/Pagination";
 import NoteForm from "@/components/NoteForm/NoteForm";
 import SearchBox from "@/components/SearchBox/SearchBox";
 import NoteList from "@/components/NoteList/NoteList";
+
 // import { FetchNotesResponse } from "@/lib/api";
 
 interface InitialValuesProps {
-  initialValues: { page: number; perPage: number; searchInput: string };
+  initialValues: {
+    page: number;
+    perPage: number;
+    searchInput: string;
+    currentTag?: string;
+  };
 }
 
 //:  Fn
 const NoteListPage = ({ initialValues }: InitialValuesProps) => {
   //: Initial Values
-  const { page, perPage, searchInput } = initialValues;
-  //: Pages
+  const { page, perPage, searchInput, currentTag } = initialValues;
 
+  //: Pages
   const [currentPage, setCurrentPage] = useState(page);
 
   //: Modal
@@ -44,12 +51,13 @@ const NoteListPage = ({ initialValues }: InitialValuesProps) => {
 
   //: Use Query
   const { data, isSuccess } = useQuery({
-    queryKey: ["notes", currentPage, perPage, searchText],
+    queryKey: ["notes", currentPage, perPage, searchText, currentTag],
     queryFn: () =>
       fetchNotes({
         page: currentPage,
         perPage: perPage,
         searchInput: searchText,
+        currentTag: currentTag,
       }),
     placeholderData: keepPreviousData,
     refetchOnMount: false,

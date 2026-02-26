@@ -1,3 +1,5 @@
+// lib/api.ts
+
 // imports
 import axios from "axios";
 
@@ -15,29 +17,23 @@ export interface FetchNotesResponse {
 const myKey = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
 axios.defaults.baseURL = "https://notehub-public.goit.study/api";
 
-export const getCategories = async () => {
-  const res = await axios<Note[]>(`/tag`, {
-    headers: {
-      Authorization: `Bearer ${myKey}`,
-    },
-  });
-  return res.data;
-};
-
 export const fetchNotes = async ({
   page,
   perPage,
   searchInput,
+  currentTag,
 }: {
   page: number;
   perPage: number;
   searchInput: string;
+  currentTag?: string;
 }) => {
   const res = await axios.get<FetchNotesResponse>("/notes", {
     params: {
       page,
       perPage,
       search: searchInput,
+      tag: currentTag,
     },
     headers: {
       Authorization: `Bearer ${myKey}`,

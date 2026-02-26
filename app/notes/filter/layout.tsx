@@ -1,3 +1,4 @@
+// app/notes/filter/layout.tsx
 type Props = {
   children: React.ReactNode;
   sidebar: React.ReactNode;

@@ -1,4 +1,4 @@
-import css from "@/app/page.module.css";
+import css from "@/app/Page.module.css";
 
 const Loading = () => {
   return <h2 className={css.loading}>Завантаження...</h2>;

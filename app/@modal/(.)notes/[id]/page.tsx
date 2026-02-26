@@ -1,6 +1,6 @@
 import { fetchNoteById } from "@/lib/api";
 // import css from "./Modal.module.css";
-impoer Note
+import Modal from "@/components/NotePreviewModal/NotePreviewModal";
 
 type Props = {
   // тут обовязково має бут "params"

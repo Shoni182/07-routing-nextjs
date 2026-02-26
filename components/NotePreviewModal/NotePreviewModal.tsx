@@ -1,5 +1,8 @@
 "use client";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { createPortal } from "react-dom";
+import css from "./NotePreviewModal.module.css";
 
 type Props = {
   children: React.ReactNode;
@@ -7,14 +10,43 @@ type Props = {
 
 const Modal = ({ children }: Props) => {
   const router = useRouter();
-  const close = () => router.back();
-  return (
-    <div>
-      <div>
-        {children}
-        <button onClick={close}>Close</button>
-      </div>
-    </div>
+  const close = () => {
+    router.back();
+  };
+  const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (event.target === event.currentTarget) {
+      router.back();
+      // close();
+    }
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        close();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "";
+    };
+  });
+
+  return createPortal(
+    <div
+      className={css.backdrop}
+      role="dialog"
+      aria-modal="true"
+      onClick={handleBackdropClick}
+    >
+      {/* <button onClick={close}>Close</button> */}
+      <div className={css.modal}>{children}</div>
+    </div>,
+    document.getElementById("modal-root") as HTMLDivElement,
   );
 };
 

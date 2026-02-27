@@ -18,21 +18,21 @@ import NoteList from "@/components/NoteList/NoteList";
 
 // import { FetchNotesResponse } from "@/lib/api";
 
-interface InitialValuesProps {
-  initialValues: {
-    page: number;
-    currentTag?: string;
-  };
-}
+// interface InitialValuesProps {
+//   initialValues: { tag?: string };
+// }
+
+type Props = {
+  tag?: string;
+};
 
 //:  Fn
-const NoteListPage = ({ initialValues }: InitialValuesProps) => {
+const Notes = ({ tag }: Props) => {
   //: Initial Values
-  const { page, currentTag } = initialValues;
 
   //: Pages
   // const perPage = 12;
-  const [currentPage, setCurrentPage] = useState(page);
+  const [currentPage, setCurrentPage] = useState(1);
 
   //: Modal
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -40,22 +40,22 @@ const NoteListPage = ({ initialValues }: InitialValuesProps) => {
   const closeModal = () => setIsModalOpen(false);
 
   //: Search and Debounce
-  const [searchText, setSearchText] = useState("");
-  const debaucedSetSearchText = useDebouncedCallback(setSearchText, 300);
+  const [query, setQuery] = useState("");
+  const debaucedSetQuery = useDebouncedCallback(setQuery, 300);
 
   const handleSearch = (value: string) => {
     setCurrentPage(1);
-    debaucedSetSearchText(value);
+    debaucedSetQuery(value);
   };
 
   //: Use Query
   const { data, isSuccess } = useQuery({
-    queryKey: ["notes", currentPage, searchText, currentTag],
+    queryKey: ["notes", currentPage, query, tag],
     queryFn: () =>
       fetchNotes({
         page: currentPage,
-        searchText: searchText,
-        currentTag: currentTag,
+        query: query,
+        tag: tag,
       }),
     placeholderData: keepPreviousData,
     refetchOnMount: false,
@@ -67,7 +67,7 @@ const NoteListPage = ({ initialValues }: InitialValuesProps) => {
   return (
     <div className={css.app}>
       <header className={css.toolbar}>
-        <SearchBox text={searchText} onSearch={handleSearch} />
+        <SearchBox text={query} onSearch={handleSearch} />
 
         {isSuccess && totalPages > 1 && (
           <Pagination
@@ -97,4 +97,4 @@ const NoteListPage = ({ initialValues }: InitialValuesProps) => {
 
 //: Export of the Fn
 
-export default NoteListPage;
+export default Notes;

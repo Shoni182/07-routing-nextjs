@@ -19,6 +19,7 @@ const NoteModal = () => {
   } = useQuery({
     queryKey: ["note", { id: id }],
     queryFn: () => fetchNoteById(id as string),
+    refetchOnMount: false,
   });
 
   if (isLoading) return <p>Loading...</p>;

@@ -1,5 +1,5 @@
 // app/notes/filter/[...slug]/page.tsx
-import NoteListPage from "./Notes.client";
+import Notes from "./Notes.client";
 
 //?   SSR server side rendering - default mode
 //
@@ -10,8 +10,8 @@ type Props = {
 
 type NoteParams = {
   page: number;
-  searchText: string;
-  currentTag?: string;
+  query: string;
+  tag?: string;
 };
 
 //: Libraries
@@ -32,25 +32,25 @@ const NotesPage = async ({ params }: Props) => {
 
   //- Запамятати
   const { slug } = await params;
-  const currentTag = slug[0] === "all" ? undefined : slug[0];
+  const tag = slug[0] === "all" ? undefined : slug[0];
 
   const queryParams: NoteParams = {
     page: 1,
-    searchText: "",
-    currentTag: currentTag,
+    query: "",
+    tag: tag,
   };
 
   await queryClient.prefetchQuery({
     // На серверній частині ключі записуються обєктами задля вдомності,
     // так як вони повинні співпадати з Кількістю ключів в клієнському компоненті
-    queryKey: ["notes", currentTag],
+    queryKey: ["notes", tag],
     queryFn: () => fetchNotes(queryParams),
   });
 
   // : Return and dehydratation
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <NoteListPage initialValues={queryParams} />
+      <Notes tag={tag} />
     </HydrationBoundary>
   );
 };

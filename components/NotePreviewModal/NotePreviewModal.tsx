@@ -10,13 +10,14 @@ type Props = {
 
 const Modal = ({ children }: Props) => {
   const router = useRouter();
+
   const close = () => {
     router.back();
   };
+
   const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (event.target === event.currentTarget) {
-      router.back();
-      // close();
+      close();
     }
   };
 
@@ -43,8 +44,12 @@ const Modal = ({ children }: Props) => {
       aria-modal="true"
       onClick={handleBackdropClick}
     >
-      {/* <button onClick={close}>Close</button> */}
-      <div className={css.modal}>{children}</div>
+      <div className={css.modal}>
+        {children}
+        <button onClick={close} className={css.cancelButton}>
+          Close
+        </button>
+      </div>
     </div>,
     document.getElementById("modal-root") as HTMLDivElement,
   );

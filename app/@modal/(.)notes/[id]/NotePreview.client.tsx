@@ -2,14 +2,15 @@
 
 import Modal from "@/components/NotePreviewModal/NotePreviewModal";
 import { fetchNoteById } from "@/lib/api";
-import { Note } from "@/types/note";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
-// import NotePreview from "./page";
+import css from "./Modal.module.css";
 
 //:use Query
 
 const NoteModal = () => {
+  //: Modal
+
   const { id } = useParams();
   const {
     data: note,
@@ -25,8 +26,12 @@ const NoteModal = () => {
 
   return (
     <Modal>
-      <h2>{note.title}</h2>
-      <p>{note.content}</p>
+      <div className={css.modalContainer}>
+        <h2>{note.title}</h2>
+        <p>{note.content}</p>
+        <p className={css.date}>{note.createdAt}</p>
+        <p className={css.tag}>{note.tag}</p>
+      </div>
     </Modal>
   );
 };

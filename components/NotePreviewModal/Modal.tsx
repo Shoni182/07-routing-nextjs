@@ -6,9 +6,10 @@ import css from "./NotePreviewModal.module.css";
 
 type Props = {
   children: React.ReactNode;
+  onClose: () => void;
 };
 
-const Modal = ({ children }: Props) => {
+const Modal = ({ children, onClose }: Props) => {
   const router = useRouter();
 
   const close = () => {
@@ -46,9 +47,9 @@ const Modal = ({ children }: Props) => {
     >
       <div className={css.modal}>
         {children}
-        <button onClick={close} className={css.cancelButton}>
+        {/* <button onClick={close} className={css.cancelButton}>
           Close
-        </button>
+        </button> */}
       </div>
     </div>,
     document.getElementById("modal-root") as HTMLDivElement,
